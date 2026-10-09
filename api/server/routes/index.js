@@ -43,6 +43,7 @@ const user = require('./user');
 const mcp = require('./mcp');
 const rum = require('./rum');
 const insights = require('./insights');
+const siderProxy = require('./siderProxy');
 
 module.exports = {
   insights,
@@ -90,4 +91,5 @@ module.exports = {
   categories,
   staticRoute,
   accessPermissions,
+  siderProxy,
 };
