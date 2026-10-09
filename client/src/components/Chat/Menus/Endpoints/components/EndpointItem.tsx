@@ -279,7 +279,7 @@ export function EndpointItem({ endpoint, endpointIndex }: EndpointItemProps) {
           {endpoint.icon}
         </div>
       )}
-      <span className="truncate text-left">{endpoint.label}</span>
+      <span className="truncate text-left font-semibold">{endpoint.label}</span>
     </div>
   );
 

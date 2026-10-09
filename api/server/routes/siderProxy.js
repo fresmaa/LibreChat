@@ -4,6 +4,22 @@ const { logger } = require('@librechat/data-schemas');
 
 const router = express.Router();
 
+function extractApiKey(req) {
+  // LibreChat sends user-provided API keys in the request body for custom endpoints
+  if (req.body && req.body.apiKey) {
+    return req.body.apiKey;
+  }
+  
+  // Extract from Authorization header
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authHeader.slice(7);
+  }
+  
+  // Fall back to environment variable
+  return process.env.SIDER_API_KEY;
+}
+
 function transformToSiderFormat(messages) {
   return (messages || []).map(msg => {
     let content;
@@ -24,7 +40,10 @@ function transformToSiderFormat(messages) {
 
 function handleSiderRequest(req, res) {
   try {
-    const { messages, model } = req.body;
+    const { messages, model, stream } = req.body;
+    const useStreaming = stream !== false;
+
+    logger.info(`[Sider Proxy] Request: model=${model}, stream=${useStreaming}, msgs=${messages?.length}`);
 
     const siderBody = {
       model: model || 'claude-opus-5.5',
@@ -37,7 +56,7 @@ function handleSiderRequest(req, res) {
     };
 
     const bodyJson = JSON.stringify(siderBody);
-    const apiKey = process.env.SIDER_API_KEY;
+    const apiKey = extractApiKey(req);
 
     if (!apiKey) {
       return res.status(500).json({ error: { message: 'SIDER_API_KEY not configured', type: 'configuration_error' } });
@@ -85,6 +104,29 @@ function handleSiderRequest(req, res) {
     }
 
     logger.info(`[Sider Proxy] Content length: ${fullContent.length}`);
+
+    if (!useStreaming) {
+      res.json({
+        id: `chatcmpl-${Date.now()}`,
+        object: 'chat.completion',
+        created: Math.floor(Date.now() / 1000),
+        model: siderBody.model,
+        choices: [{
+          index: 0,
+          message: {
+            role: 'assistant',
+            content: fullContent || 'No response'
+          },
+          finish_reason: 'stop'
+        }],
+        usage: {
+          prompt_tokens: 0,
+          completion_tokens: 0,
+          total_tokens: 0
+        }
+      });
+      return;
+    }
 
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
@@ -145,7 +187,6 @@ function handleSiderRequest(req, res) {
       logger.error(`[Sider Proxy] Stderr: ${error.stderr.toString().substring(0, 500)}`);
     }
     
-    // Send error as SSE
     res.writeHead(502, {
       'Content-Type': 'text/event-stream'
     });
