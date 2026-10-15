@@ -55,6 +55,6 @@ module.exports = {
     ),
     /* key will be part of separate config */
     [EModelEndpoint.agents]: generateConfig('true', undefined, EModelEndpoint.agents),
-    [EModelEndpoint.siderAI]: generateConfig('true', undefined, EModelEndpoint.siderAI),
+    [EModelEndpoint.siderAI]: generateConfig('user_provided', undefined, EModelEndpoint.siderAI),
   },
 };
