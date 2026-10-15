@@ -34,7 +34,7 @@ async function loadDefaultModels(req) {
       appConfig?.endpoints?.[EModelEndpoint.anthropic]?.headers,
     );
 
-    const [openAI, anthropic, azureOpenAI, assistants, azureAssistants, google, bedrock] =
+    const [openAI, anthropic, azureOpenAI, assistants, azureAssistants, google, bedrock, siderAI] =
       await Promise.all([
         getOpenAIModels({
           user: req.user.id,
@@ -75,6 +75,16 @@ async function loadDefaultModels(req) {
           logger.error('Error getting Bedrock models:', error);
           return [];
         }),
+        getOpenAIModels({
+          user: req.user.id,
+          baseURL: process.env.SIDER_BASE_URL || 'https://api.sider.ai',
+          headers: openAIHeaders,
+          userObject: req.user,
+          configuredModels: configuredModelList(appConfig, EModelEndpoint.siderAI),
+        }).catch((error) => {
+          logger.error('Error fetching Sider AI models:', error);
+          return [];
+        }),
       ]);
 
     return {
@@ -85,6 +95,7 @@ async function loadDefaultModels(req) {
       [EModelEndpoint.assistants]: assistants,
       [EModelEndpoint.azureAssistants]: azureAssistants,
       [EModelEndpoint.bedrock]: bedrock,
+      [EModelEndpoint.siderAI]: siderAI,
     };
   } catch (error) {
     logger.error('Error fetching default models:', error);
