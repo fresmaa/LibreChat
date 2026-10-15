@@ -50,6 +50,7 @@ const endpointSchemas: Record<EndpointSchemaLookupKey, EndpointSchema> = {
   [EModelEndpoint.azureAssistants]: assistantSchema,
   [EModelEndpoint.agents]: compactAgentsSchema,
   [EModelEndpoint.bedrock]: bedrockInputSchema,
+  [EModelEndpoint.siderAI]: openAISchema,
 };
 
 const isEndpointSchemaLookupKey = (value?: string | null): value is EndpointSchemaLookupKey =>
@@ -85,6 +86,7 @@ export function getEnabledEndpoints() {
     EModelEndpoint.google,
     EModelEndpoint.anthropic,
     EModelEndpoint.bedrock,
+    EModelEndpoint.siderAI,
   ];
 
   const endpointsEnv = process.env.ENDPOINTS ?? '';
@@ -332,6 +334,7 @@ const compactEndpointSchemas: Record<EndpointSchemaLookupKey, CompactEndpointSch
   [EModelEndpoint.google]: compactGoogleSchema,
   [EModelEndpoint.bedrock]: bedrockInputSchema,
   [EModelEndpoint.anthropic]: anthropicSchema,
+  [EModelEndpoint.siderAI]: openAISchema,
 };
 
 export const parseCompactConvo = ({

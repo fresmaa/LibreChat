@@ -35,6 +35,7 @@ export enum EModelEndpoint {
   agents = 'agents',
   custom = 'custom',
   bedrock = 'bedrock',
+  siderAI = 'siderAI',
 }
 
 /** Mirrors `@librechat/agents` providers */
@@ -51,6 +52,7 @@ export enum Providers {
   MOONSHOT = 'moonshot',
   OPENROUTER = 'openrouter',
   XAI = 'xai',
+  SIDER = 'siderAI',
 }
 
 /**

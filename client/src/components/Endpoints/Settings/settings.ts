@@ -16,6 +16,7 @@ const settings: { [key: string]: FC<TModelSelectProps> | undefined } = {
   [EModelEndpoint.azureOpenAI]: OpenAISettings,
   [EModelEndpoint.anthropic]: AnthropicSettings,
   [EModelEndpoint.bedrock]: BedrockSettings,
+  [EModelEndpoint.siderAI]: OpenAISettings,
 };
 
 export const getSettings = () => {

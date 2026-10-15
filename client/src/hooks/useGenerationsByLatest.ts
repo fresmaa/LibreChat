@@ -48,6 +48,7 @@ export default function useGenerationsByLatest({
       EModelEndpoint.bedrock,
       EModelEndpoint.anthropic,
       EModelEndpoint.azureOpenAI,
+      EModelEndpoint.siderAI,
     ].find((e) => e === endpoint),
   );
 
@@ -84,6 +85,7 @@ export default function useGenerationsByLatest({
       EModelEndpoint.bedrock,
       EModelEndpoint.google,
       EModelEndpoint.anthropic,
+      EModelEndpoint.siderAI,
     ].find((e) => e === endpoint),
   );
 

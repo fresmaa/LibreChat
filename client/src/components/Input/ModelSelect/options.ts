@@ -13,6 +13,7 @@ export const options: { [key: string]: FC<TModelSelectProps> } = {
   [EModelEndpoint.azureOpenAI]: OpenAI,
   [EModelEndpoint.google]: Google,
   [EModelEndpoint.anthropic]: Anthropic,
+  [EModelEndpoint.siderAI]: OpenAI,
 };
 
 export const multiChatOptions = {

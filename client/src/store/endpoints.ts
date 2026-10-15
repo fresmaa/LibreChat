@@ -11,6 +11,7 @@ const defaultConfig: TEndpointsConfig = {
   [EModelEndpoint.google]: null,
   [EModelEndpoint.anthropic]: null,
   [EModelEndpoint.custom]: null,
+  [EModelEndpoint.siderAI]: null,
 };
 
 const endpointsConfig = atom<TEndpointsConfig>({

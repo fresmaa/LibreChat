@@ -24,6 +24,7 @@ async function loadDefaultEndpointsConfig(appConfig) {
     [EModelEndpoint.google]: google,
     [EModelEndpoint.anthropic]: config[EModelEndpoint.anthropic],
     [EModelEndpoint.bedrock]: config[EModelEndpoint.bedrock],
+    [EModelEndpoint.siderAI]: config[EModelEndpoint.siderAI],
   };
 
   const orderedAndFilteredEndpoints = enabledEndpoints.reduce((config, key, index) => {
